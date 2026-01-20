@@ -1,4 +1,4 @@
-package io.github.ahansantra.calculator;
+package io.github.ahansantra.calculator.ui;
 
 import javax.sound.sampled.*;
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package io.github.ahansantra.calculator.solve;
+package io.github.ahansantra.calculator.engine;
 
 public enum TOKENDATATYPE{
     NUMBER,
