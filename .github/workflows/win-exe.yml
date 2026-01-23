@@ -28,7 +28,7 @@ jobs:
             --dest dist `
             --name Calculator `
             --app-version 1.0.0 `
-            --input build/libs `
+            --input ../../build/libs `
             --main-jar Calculator-1.0.0.jar `
             --main-class io.github.ahansantra.calculator.Main `
             --win-console `
