@@ -19,6 +19,14 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          
+      - name: Show project files
+        shell: bash
+        run: ls -la
+        
+      - name: Show project files
+        shell: bash
+        run: ls -la ../../
 
       - name: Build Windows EXE using jpackage
         shell: powershell
@@ -28,10 +36,9 @@ jobs:
             --dest dist `
             --name Calculator `
             --app-version 1.0.0 `
-            --input build/libs `
-            --main-jar calculator-1.0.0.jar `
+            --input ../../build/libs `
+            --main-jar Calculator-1.0.0.jar `
             --main-class io.github.ahansantra.calculator.Main `
-            --icon icon.ico `
             --win-console `
             --win-shortcut `
             --win-menu
