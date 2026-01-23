@@ -1,5 +1,7 @@
 plugins {
     application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("org.beryx.jlink") version "2.26.0"
 }
 
 group = "io.github.ahansantra"
@@ -7,6 +9,7 @@ version = "1.0.0"
 
 application {
     mainClass.set("io.github.ahansantra.calculator.Main")
+    mainModule.set("io.github.ahansantra.calculator")
 }
 
 java {
@@ -58,3 +61,19 @@ tasks.register<Exec>("jpackageApp") {
     )
 }
 
+tasks.register("windowsExe") {
+    dependsOn("shadowJar")
+
+    doLast {
+        exec {
+            commandLine(
+                "scripts/build-exe.sh",
+                "Calculator",
+                project.version.toString(),
+                "build/libs/calculator-${project.version}-all.jar",
+                "io.github.ahansantra.calculator.Main",
+                "icons/calculator.ico"
+            )
+        }
+    }
+}
