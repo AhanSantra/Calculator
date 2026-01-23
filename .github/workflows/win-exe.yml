@@ -20,9 +20,13 @@ jobs:
           distribution: temurin
           java-version: 17
           
-      - name: List built JARs
+      - name: Show project files
         shell: bash
-        run: ls -lh build/libs
+        run: ls -la
+        
+      - name: Show project files
+        shell: bash
+        run: ls -la ../../
 
       - name: Build Windows EXE using jpackage
         shell: powershell
