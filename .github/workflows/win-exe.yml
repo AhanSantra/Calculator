@@ -22,11 +22,7 @@ jobs:
           
       - name: Show project files
         shell: bash
-        run: ls -la
-        
-      - name: Show project files
-        shell: bash
-        run: ls -la ../../
+        run: ls -la build/libs
 
       - name: Build Windows EXE using jpackage
         shell: powershell
@@ -36,7 +32,7 @@ jobs:
             --dest dist `
             --name Calculator `
             --app-version 1.0.0 `
-            --input ../../build/libs `
+            --input build/libs `
             --main-jar Calculator-1.0.0.jar `
             --main-class io.github.ahansantra.calculator.Main `
             --win-console `
