@@ -1,0 +1,50 @@
+name: Build Windows EXE
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Grant execute permission to Gradle
+        run: chmod +x gradlew
+        shell: bash
+
+      - name: Build fat JAR
+        run: ./gradlew clean build
+        shell: bash
+
+      - name: Build Windows EXE using jpackage
+        run: |
+          jpackage ^
+            --type exe ^
+            --name Calculator ^
+            --app-version 1.0.0 ^
+            --input build/libs ^
+            --main-jar Calculator-1.0.0.jar ^
+            --main-class io.github.ahansantra.calculator.Main ^
+            --icon icon.ico ^
+            --win-console ^
+            --win-shortcut ^
+            --win-menu
+        shell: cmd
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe
+          path: *.exe
