@@ -20,10 +20,6 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build JAR
-        run: ./gradlew clean build
-        shell: bash
-
       - name: Build Windows EXE using jpackage
         shell: powershell
         run: |
