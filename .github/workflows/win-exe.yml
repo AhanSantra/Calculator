@@ -31,7 +31,6 @@ jobs:
             --input build/libs `
             --main-jar calculator-1.0.0.jar `
             --main-class io.github.ahansantra.calculator.Main `
-            --icon icon.ico `
             --win-console `
             --win-shortcut `
             --win-menu
