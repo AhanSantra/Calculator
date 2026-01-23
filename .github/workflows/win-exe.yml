@@ -39,6 +39,11 @@ jobs:
             --win-shortcut `
             --win-menu
 
+      - name: Find EXE files
+        shell: powershell
+        run: |
+          Get-ChildItem -Recurse -Filter *.exe
+
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
