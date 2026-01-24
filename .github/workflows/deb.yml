@@ -32,4 +32,6 @@ jobs:
 
       - name: Build DEB package
         run: |
-          ./jar-to-debs "${{ steps.version.outputs.version }}"
+          ./gradlew clean jpackageApp
+          ./jpackage-to-deb.sh "Calculator" "${{ steps.version.outputs.version }}"
+          
