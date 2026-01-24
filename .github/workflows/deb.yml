@@ -1,0 +1,35 @@
+name: Build DEB on Version Tag
+
+on:
+  push:
+    tags:
+      - '*'        # runs on any tag
+      # or use 'v*' if you only want v1.2.3 style tags
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x ./jar-to-debs
+
+      - name: Get version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION"
+
+      - name: Delete old deb files
+        run: |
+          find . -name "*.deb" -type f -delete
+          echo "Old .deb files removed"
+
+      - name: Build DEB package
+        run: |
+          ./jar-to-debs "${{ steps.version.outputs.version }}"
