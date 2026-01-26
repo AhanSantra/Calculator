@@ -3,7 +3,7 @@ name: Build DEB on Version Tag
 on:
   push:
     tags:
-      - '*'        # runs on any tag
+      - 'v*'        # runs on any tag
       # or use 'v*' if you only want v1.2.3 style tags
 
 jobs:
