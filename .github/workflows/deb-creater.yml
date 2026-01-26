@@ -3,7 +3,8 @@ name: Build DEB on Version Tag
 on:
   push:
     tags:
-      - 'v*'
+      - '*'        # runs on any tag
+      # or use 'v*' if you only want v1.2.3 style tags
 
 jobs:
   build-deb:
@@ -12,13 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0   # IMPORTANT for tags + Gradle  # match your project
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
-
-      - name: Make jpackage script executable
+      - name: Make script executable
         run: chmod +x ./jpackage-to-deb.sh
 
       - name: Get version from tag
@@ -27,9 +23,11 @@ jobs:
           TAG="${GITHUB_REF#refs/tags/}"
           VERSION="${TAG#v}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-
+          echo "Detected version: $VERSION"
       - name: Delete old deb files
-        run: find . -name "*.deb" -type f -delete
-
+        run: |
+          find . -name "*.deb" -type f -delete
+          echo "Old .deb files removed"
       - name: Build DEB package
-        run: ./jpackage-to-deb.sh "calculator" "${{ steps.version.outputs.version }}"
+        run: |
+          ./jpackage-to-deb.sh "calculator" "${{ steps.version.outputs.version }}"
