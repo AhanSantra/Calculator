@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.ahansantra"
-version = "1.0.0"
+version = "1.0.1"
 
 application {
     mainClass.set("io.github.ahansantra.calculator.Main")
