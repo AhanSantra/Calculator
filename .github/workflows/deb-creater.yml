@@ -32,4 +32,4 @@ jobs:
         run: find . -name "*.deb" -type f -delete
 
       - name: Build DEB package
-        run: ./jpackage-to-deb.sh "Calculator" "${{ steps.version.outputs.version }}"
+        run: ./jpackage-to-deb.sh "calculator" "${{ steps.version.outputs.version }}"
