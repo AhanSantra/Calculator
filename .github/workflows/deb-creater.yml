@@ -32,24 +32,38 @@ jobs:
 
       - name: Verify DEB exists
         run: |
-          find . -name "*.deb" -ls
+          ls dists
 
-      # 👇 CLONE TARGET REPO
       - name: Clone linux-java-debs repo
         run: |
           git clone https://x-access-token:${{ secrets.PUSH_TOKEN }}@github.com/ahansantra/linux-java-debs.git
+          ls -lah linux-java-debs
 
-      # 👇 COPY DEB INTO IT
-      - name: Copy DEB files
+      - name: Copy deb files (DEBUG)
         run: |
-          cp **/*.deb linux-java-debs/
+          echo "==== FINDING DEB FILES ===="
+          ls
+          find . -name "*.deb" -ls
 
-      # 👇 COMMIT & PUSH
-      - name: Commit and push DEB
+          echo "==== COPYING ===="
+          find . -name "*.deb" -exec cp -v {} linux-java-debs/ \;
+
+          echo "==== TARGET DIR CONTENTS ===="
+          ls -lah linux-java-debs
+
+      - name: Commit and push (DEBUG)
         run: |
           cd linux-java-debs
+
+          git status
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add *.deb
-          git commit -m "Add calculator ${{ steps.version.outputs.version }} DEB"
-          git push
+
+          git add .
+          git status
+
+          git commit -m "Add calculator ${{ steps.version.outputs.version }} DEB" || echo "⚠️ NOTHING TO COMMIT"
+
+          git branch
+          git push origin HEAD || echo "❌ PUSH FAILED"
+
