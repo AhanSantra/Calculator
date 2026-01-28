@@ -46,7 +46,7 @@ jobs:
           find . -name "*.deb" -ls
 
           echo "==== COPYING ===="
-          find . -name "*.deb" -exec cp -v {} linux-java-debs/ \;
+          cp "$(find . -maxdepth 1 -name "*.deb" -printf "%f\n")" linux-java-debs/
 
           echo "==== TARGET DIR CONTENTS ===="
           ls -lah linux-java-debs
