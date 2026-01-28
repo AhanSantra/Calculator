@@ -3,15 +3,14 @@ name: Build DEB on Version Tag
 on:
   push:
     tags:
-      - '*'        # runs on any tag
-      # or use 'v*' if you only want v1.2.3 style tags
+      - '*'
 
 jobs:
   build-deb:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout source repo
         uses: actions/checkout@v4
 
       - name: Make script executable
@@ -23,11 +22,34 @@ jobs:
           TAG="${GITHUB_REF#refs/tags/}"
           VERSION="${TAG#v}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Detected version: $VERSION"
+
       - name: Delete old deb files
-        run: |
-          find . -name "*.deb" -type f -delete
-          echo "Old .deb files removed"
-      - name: Build DEB package
+        run: find . -name "*.deb" -type f -delete
+
+      - name: Build DEB
         run: |
           ./jpackage-to-deb.sh "calculator" "${{ steps.version.outputs.version }}"
+
+      - name: Verify DEB exists
+        run: |
+          find . -name "*.deb" -ls
+
+      # 👇 CLONE TARGET REPO
+      - name: Clone linux-java-debs repo
+        run: |
+          git clone https://x-access-token:${{ secrets.PUSH_TOKEN }}@github.com/ahansantra/linux-java-debs.git
+
+      # 👇 COPY DEB INTO IT
+      - name: Copy DEB files
+        run: |
+          cp **/*.deb linux-java-debs/
+
+      # 👇 COMMIT & PUSH
+      - name: Commit and push DEB
+        run: |
+          cd linux-java-debs
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add *.deb
+          git commit -m "Add calculator ${{ steps.version.outputs.version }} DEB"
+          git push
