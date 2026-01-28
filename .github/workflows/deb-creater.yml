@@ -39,14 +39,13 @@ jobs:
           git clone https://x-access-token:${{ secrets.PUSH_TOKEN }}@github.com/ahansantra/linux-java-debs.git
           ls -lah linux-java-debs
 
-      - name: Copy deb files (DEBUG)
+      - name: Copy DEB files
         run: |
           echo "==== FINDING DEB FILES ===="
-          ls
           find . -name "*.deb" -ls
 
           echo "==== COPYING ===="
-          cp "$(find . -maxdepth 1 -name "*.deb" -printf "%f\n")" linux-java-debs/
+          find . -name "*.deb" -exec cp -v {} linux-java-debs/ \;
 
           echo "==== TARGET DIR CONTENTS ===="
           ls -lah linux-java-debs
