@@ -9,7 +9,8 @@ jobs:
     steps:
       - name: Download Dell Driver EXE
         run: |
-          curl -L -o $env:RUNNER_TEMP\driver.exe "https://dl.dell.com/FOLDER03387821M/1/Inspiron_20_Model_3043_A12.exe"
+          Invoke-WebRequest -Uri "https://dl.dell.com/FOLDER03387821M/1/Inspiron_20_Model_3043_A12.exe" -OutFile "$env:RUNNER_TEMP\driver.exe"
+          Get-Item "$env:RUNNER_TEMP\driver.exe" | Select-Object Name, Length
 
       - name: Run installer silently
         run: |
