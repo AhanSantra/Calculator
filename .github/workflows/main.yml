@@ -10,12 +10,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download file from MediaFire
+      - name: Download NeoProgrammer ZIP
         run: |
-          wget --content-disposition "https://www.mediafire.com/file/1263zy82q612ub4/NeoProgrammer+V2.2.0.10.zip/file" -O NeoProgrammer.zip
+          wget -O NeoProgrammer.zip "https://download2362.mediafire.com/uc27r0xf7zfgt8KLaMj_mSXYKMfS52viaDhsctjE3_kV6Wk1Roy1XHXvj7oxn3-a5cYhVaYxq0rj22hHqP_Urr1yjPuHxFy4dn6o8CLEQk64lBnWS1sWcKQB_9bsn7ftwYd5UmskEGkHlcyfp8Yq04HG7uHc-212C9vylV1ZVlwdEf0/1263zy82q612ub4/NeoProgrammer+V2.2.0.10.zip"
 
       - name: Verify file
-        run: ls -lh NeoProgrammer.zip
+        run: |
+          file NeoProgrammer.zip
+          ls -lh NeoProgrammer.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
