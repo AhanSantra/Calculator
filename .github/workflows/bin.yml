@@ -11,23 +11,19 @@ jobs:
         run: |
           curl -L -o $env:RUNNER_TEMP\driver.exe "https://dl.dell.com/FOLDER03387821M/1/Inspiron_20_Model_3043_A12.exe"
 
-      - name: Try /s /f extraction
-        run: |
-          mkdir extracted
-          try {
-            & "$env:RUNNER_TEMP\driver.exe" /s /f extracted
-          } catch {
-            Write-Host "Force extract not supported, will scan TEMP"
-          }
-
-      - name: Scan TEMP for unpacked files
+      - name: Run installer silently
         run: |
           $temp = $env:TEMP
-          $dest = "extracted"
-          if (!(Test-Path $dest)) { mkdir $dest }
-          # Look for driver files dropped in TEMP
-          Get-ChildItem $temp -Recurse -Include *.inf,*.sys,*.cat -ErrorAction SilentlyContinue |
-            ForEach-Object { Copy-Item $_.FullName $dest -Force }
+          $before = Get-ChildItem $temp -Recurse | Select-Object FullName
+          Start-Process -FilePath "$env:RUNNER_TEMP\driver.exe" -ArgumentList "/s" -Wait
+          $after = Get-ChildItem $temp -Recurse | Select-Object FullName
+          $newFiles = Compare-Object $before $after -Property FullName | Where-Object { $_.SideIndicator -eq "=>" }
+          mkdir extracted
+          foreach ($f in $newFiles) {
+            try {
+              Copy-Item $f.FullName extracted -Force
+            } catch {}
+          }
 
       - name: Upload extracted files
         uses: actions/upload-artifact@v4
