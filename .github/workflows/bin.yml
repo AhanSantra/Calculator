@@ -9,17 +9,14 @@ jobs:
     steps:
       - name: Download Dell Driver EXE
         run: |
-          curl -L -o driver.exe "https://dl.dell.com/FOLDER03387821M/1/Inspiron_20_Model_3043_A12.exe"
+          curl -L -o $env:RUNNER_TEMP\driver.exe "https://dl.dell.com/FOLDER03387821M/1/Inspiron_20_Model_3043_A12.exe"
 
-      - name: Install 7-Zip
-        run: choco install 7zip -y
-
-      - name: Extract EXE contents
+      - name: Extract with Dell installer
         run: |
           mkdir extracted
-          driver.exe /extract extracted
+          & "$env:RUNNER_TEMP\driver.exe" /extract extracted
 
-      - name: Upload extracted files as artifact
+      - name: Upload extracted files
         uses: actions/upload-artifact@v4
         with:
           name: dell-driver-files
