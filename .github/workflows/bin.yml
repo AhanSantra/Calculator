@@ -14,7 +14,7 @@ jobs:
       - name: Extract with Dell installer
         run: |
           mkdir extracted
-          & "$env:RUNNER_TEMP\driver.exe" /extract extracted
+          .\driver.exe" /extract extracted
 
       - name: Upload extracted files
         uses: actions/upload-artifact@v4
