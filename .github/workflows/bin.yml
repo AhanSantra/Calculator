@@ -1,0 +1,26 @@
+name: Extract Dell Driver EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract-driver:
+    runs-on: windows-latest
+    steps:
+      - name: Download Dell Driver EXE
+        run: |
+          curl -L -o driver.exe "https://dl.dell.com/FOLDER03387821M/1/Inspiron_20_Model_3043_A12.exe"
+
+      - name: Install 7-Zip
+        run: choco install 7zip -y
+
+      - name: Extract EXE contents
+        run: |
+          mkdir extracted
+          7z x driver.exe -oextracted
+
+      - name: Upload extracted files as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dell-driver-files
+          path: extracted
