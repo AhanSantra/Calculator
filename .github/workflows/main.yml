@@ -12,10 +12,13 @@ jobs:
 
       - name: Download file from MediaFire
         run: |
-          wget --content-disposition "https://www.mediafire.com/file/1263zy82q612ub4/NeoProgrammer+V2.2.0.10.zip/file"
+          wget --content-disposition "https://www.mediafire.com/file/1263zy82q612ub4/NeoProgrammer+V2.2.0.10.zip/file" -O NeoProgrammer.zip
+
+      - name: Verify file
+        run: ls -lh NeoProgrammer.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: NeoProgrammer
-          path: NeoProgrammer*.zip
+          path: NeoProgrammer.zip
