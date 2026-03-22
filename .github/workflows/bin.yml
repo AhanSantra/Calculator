@@ -17,7 +17,7 @@ jobs:
       - name: Extract EXE contents
         run: |
           mkdir extracted
-          7z x driver.exe -oextracted
+          driver.exe /extract extracted
 
       - name: Upload extracted files as artifact
         uses: actions/upload-artifact@v4
