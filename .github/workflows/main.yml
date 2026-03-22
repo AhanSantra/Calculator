@@ -1,0 +1,21 @@
+name: Download and Upload Artifact
+
+on:
+  workflow_dispatch:  # allows manual trigger
+
+jobs:
+  fetch-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download file from MediaFire
+        run: |
+          curl -L "https://download1502.mediafire.com/1263zy82q612ub4/NeoProgrammer+V2.2.0.10.zip" -o NeoProgrammer.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeoProgrammer
+          path: NeoProgrammer.zip
